@@ -39,7 +39,7 @@ export default () =>{
     if(emaiField != '' && passwordField != ''){
       let json = await Api.signIn(emaiField, passwordField);
       if(json.token){
-        await AsyncStorage.setEmailField('token', json.token);
+        await AsyncStorage.setItem('token', json.token);
 
         userDispatch({
           type: 'setAvatar',

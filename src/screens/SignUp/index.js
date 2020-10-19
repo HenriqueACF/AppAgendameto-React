@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { UserContext } from '../../contexts/UserContext';
+
 import {
   Container,
   InputArea,
@@ -20,6 +23,7 @@ import LockIcon from '../../assets/lock.svg';
 import PersonIcon from '../../assets/person.svg';
 
 export default () =>{
+  const { dispatch: userDispatch } = useContext(UserContext);
   //navigation
   const navigation = useNavigation();
 
@@ -33,7 +37,18 @@ export default () =>{
     if(nameField != '' && emaiField != '' && passwordField != ''){
       let res = await Api.signUp(nameField, emaiField, passwordField);
         if(res.toke){
-          alert('Deu certo')
+          await AsyncStorage.setItem('token', res.token);
+
+          userDispatch({
+            type: 'setAvatar',
+            payload:{
+              avatar:res.data.avatar
+            }
+          })
+
+          navigation.reset({
+            routes:[{name:'MainTab'}]
+          })
         }else{
           alert(`Erro: ${res.error}`);
         }
