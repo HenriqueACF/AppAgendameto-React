@@ -29,8 +29,17 @@ export default () =>{
   const [passwordField, setPasswordField] = useState('');
 
   //functions
-  const handleSignClick = () =>{
-
+  const handleSignClick = async () =>{
+    if(nameField != '' && emaiField != '' && passwordField != ''){
+      let res = await Api.signUp(nameField, emaiField, passwordField);
+        if(res.toke){
+          alert('Deu certo')
+        }else{
+          alert(`Erro: ${res.error}`);
+        }
+    }else{
+      alert('Preencha os campos!');
+    }
   }
 
   const handleMessageButtonClick = () =>{

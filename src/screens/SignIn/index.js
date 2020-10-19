@@ -1,5 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import { UserContext } from '../../contexts/UserContext';
+
 import {
   Container,
   InputArea,
@@ -10,6 +14,9 @@ import {
   SignMessageButtonTextBold,
 } from './styles';
 
+//api
+import Api from '../../Api';
+
 //components
 import SignInput from '../../components/SignInput';
 
@@ -19,6 +26,7 @@ import EmailIcon from '../../assets/email.svg';
 import LockIcon from '../../assets/lock.svg';
 
 export default () =>{
+  const { dispatch: userDispatch } = useContext(UserContext);
   //navigation
   const navigation = useNavigation();
 
@@ -27,8 +35,29 @@ export default () =>{
   const [passwordField, setPasswordField] = useState('');
 
   //functions
-  const handleSignClick = () =>{
+  const handleSignClick = async() =>{
+    if(emaiField != '' && passwordField != ''){
+      let json = await Api.signIn(emaiField, passwordField);
+      if(json.token){
+        await AsyncStorage.setEmailField('token', json.token);
 
+        userDispatch({
+          type: 'setAvatar',
+          payload:{
+            avatar:json.data.avatar
+          }
+        })
+
+        navigation.reset({
+          routes:[{name:'MainTab'}]
+        })
+
+      }else{
+        alert('E-mail e/ou senha errados!')
+      }
+    }else{
+      alert('Preencha os campos!')
+    }
   }
 
   const handleMessageButtonClick = () =>{
