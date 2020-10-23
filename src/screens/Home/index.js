@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import Geolocation from '@react-native-community/geolocation';
+//import { request, PERMISSIONS } from 'react-native-permissions';
+//import Geolocation from '@react-native-community/geolocation';
+
+import * as Location from 'expo-location';
 import { Platform } from 'react-native';
 import * as Permissions from 'expo-permissions';
 
@@ -37,22 +39,32 @@ export default () =>{
     //functions
     const handleLocationFinder = async () =>{ 
         setCoords(null);
-        let result = await request(
-            Platform.OS === 'ios' 
-            ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-            : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION 
+        // let result = await request(
+        //     Platform.OS === 'ios' 
+        //     ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+        //     : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION 
+        // );
+
+        const { status } = await Permissions.getAsync(
+            Permissions.LOCATION
         );
 
-        if(result === 'granted'){
+        if(status === 'granted'){
 
             setLoading(true);
             setLocationText('');
             setList([]);
 
-            Geolocation.getCurrentPosition((info)=>{
-                setCoords(info.coords);
+            let location = await Location.getCurrentPositionAsync({});
+
+            if (location) {
+                setCoords(location.coords);
                 getBarbers();
-            })
+            }
+
+            // Geolocation.getCurrentPosition((info)=>{
+                
+            // })
         }
     }
 
