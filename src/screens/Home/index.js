@@ -19,12 +19,16 @@ import {
     LocationArea,
     LocationInput,
     LocationFinder,
-    LoadingIcon
+    LoadingIcon,
+    ListArea
 } from './styles';
 
 //svg
 import SearchIcon from '../../assets/search.svg';
 import MyLocationIcon from '../../assets/my_location.svg';
+
+//components
+import BarberItem from '../../components/BarberItem';
 
 export default () =>{
     //navigation
@@ -61,6 +65,7 @@ export default () =>{
                 setCoords(location.coords);
                 getBarbers();
             }
+            
 
             // Geolocation.getCurrentPosition((info)=>{
                 
@@ -72,9 +77,11 @@ export default () =>{
         setLoading(true);
         setList([]);
 
-        let res = await Api.getBarbers();
+        let res = await Api.getBarbers(locationText);
         if(res.error == ''){
-
+            if(res.loc){
+                setLocationText(res.loc)
+            }
             setList(res.data);
         }else{
             alert("Erro:"+res.error);
@@ -116,6 +123,12 @@ export default () =>{
                 {loading &&
                     <LoadingIcon size="large" color="#FFF"/>
                 }
+
+                <ListArea>
+                    {list.map((item, k)=>(
+                        <BarberItem key={k} data={item} />
+                    ))}
+                </ListArea>
 
             </Scroller>
         </Container>    
