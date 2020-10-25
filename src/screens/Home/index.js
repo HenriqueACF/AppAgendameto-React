@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
+import {RefreshControl} from 'react-native';
 //import { request, PERMISSIONS } from 'react-native-permissions';
 //import Geolocation from '@react-native-community/geolocation';
 
@@ -37,9 +38,8 @@ export default () =>{
     const [locationText, setLocationText] = useState('');
     const [coords, setCoords] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [list, setList] =  useState([
-
-    ])
+    const [list, setList] =  useState([]);
+    const [refreshing, setRefreshing] = useState(false);
     //functions
     const handleLocationFinder = async () =>{ 
         setCoords(null);
@@ -95,9 +95,16 @@ export default () =>{
        getBarbers(); 
     },[]);
 
+    const onRefresh = () =>{
+        setRefreshing(false);
+        getBarbers();
+    }
+
     return (
         <Container>
-            <Scroller>
+            <Scroller  refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
 
                 <HeaderArea>
                     <HeaderTitle numberOfLines={2}>
