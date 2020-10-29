@@ -3,6 +3,12 @@ import { Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 
+//components
+import Stars from '../../components/Stars';
+
+//icons
+import FavoriteIcon from '../../assets/favorite.svg';
+import BackIcon from '../../assets/back.svg';
 
 import { 
     Container,
@@ -15,7 +21,12 @@ import {
     SwipeDot,
     SwipeDotActive,
     SwipeItem,
-    SwipeImage
+    SwipeImage,
+    UserAvatar,
+    UserInfo,
+    UserInfoName,
+    UserFavButton,
+    BackButton
  } from './styles';
 
 //Api
@@ -35,6 +46,8 @@ export default () =>{
 
     const [ loading, setLoading ] = useState(false);
 
+    //useeffects
+
     useEffect(()=>{
         const getBarberInfo = async() =>{
             setLoading(true);
@@ -48,7 +61,13 @@ export default () =>{
             setLoading(false);
         }
         getBarberInfo();
-    }, [])
+    }, []);
+
+    //functions
+
+    const handleBackButton = () =>{
+        navigation.goBack();
+    }
 
     return (
         <Container>
@@ -72,7 +91,14 @@ export default () =>{
                 }
                 <PageBody>
                     <UserInfoArea>
-
+                        <UserAvatar source={{uri:userInfo.avatar}} />
+                        <UserInfo>
+                            <UserInfoName> { userInfo.name } </UserInfoName>
+                            <Stars stars={ userInfo.stars} showNumber={true}/>
+                        </UserInfo>
+                        <UserFavButton>
+                            <FavoriteIcon width="24" height="24" fill="#FF0000"/>
+                        </UserFavButton>
                     </UserInfoArea>
 
                     <ServiceArea>
@@ -85,6 +111,9 @@ export default () =>{
 
                 </PageBody>
             </Scroller>
+            <BackButton onPress={handleBackButton} >
+                <BackIcon width="44" height="44" fill="#FFF" />
+            </BackButton>
         </Container>    
     );
 }
