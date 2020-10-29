@@ -47,7 +47,7 @@ export default ({data}) => {
 
     const handleClick = () =>{
         navigation.navigate('Barber', {
-            id:data.id,
+           id:data.id,
            avatar:data.avatar,
            name:data.name,
            stars:data.stars, 
@@ -55,7 +55,7 @@ export default ({data}) => {
     }
 
     return (
-        <Area onpress={handleClick}>
+        <Area onPress={handleClick}>
             <Avatar source={{uri: data.avatar}} />
             <InfoArea>
                 <UserName>{data.name}</UserName>
