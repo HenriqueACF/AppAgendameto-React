@@ -9,24 +9,43 @@ import Stars from '../../components/Stars';
 //icons
 import FavoriteIcon from '../../assets/favorite.svg';
 import BackIcon from '../../assets/back.svg';
+import NavPrevIcon from '../../assets/nav_prev.svg';
+import NavNextIcon from '../../assets/nav_next.svg';
 
 import { 
     Container,
     Scroller,
-    FakeSwiper,
     PageBody,
-    UserInfoArea,
-    ServiceArea,
-    TestimonialArea,
+    BackButton,
+    LoadingIcon,
+    
+    FakeSwiper,
     SwipeDot,
     SwipeDotActive,
     SwipeItem,
     SwipeImage,
+
+    UserInfoArea,
     UserAvatar,
     UserInfo,
     UserInfoName,
     UserFavButton,
-    BackButton
+    
+    ServiceArea,
+    ServiceItem,
+    ServiceInfo,
+    ServiceName,
+    ServicePrice,
+    ServiceChooseButton,
+    ServiceChooseBtnText,
+    ServicesTitle,
+
+    TestimonialArea,
+    TestimonialItem, 
+    TestimonialInfo,
+    TestimonialName,
+    TestimonialBody,
+    
  } from './styles';
 
 //Api
@@ -100,15 +119,50 @@ export default () =>{
                             <FavoriteIcon width="24" height="24" fill="#FF0000"/>
                         </UserFavButton>
                     </UserInfoArea>
+                        {loading &&
+                            <LoadingIcon size="large" color="#63C2D1" />
+                        }
+                    {userInfo.services &&    
+                        <ServiceArea>
+                            <ServicesTitle>Lista de serviços</ServicesTitle>
 
-                    <ServiceArea>
+                            {userInfo.services.map((item, key)=>(
+                                <ServiceItem key={key}>
+                                    
+                                    <ServiceInfo>
+                                        <ServiceName> {item.name} </ServiceName>
+                                        <ServicePrice> R${item.price} </ServicePrice>
+                                    </ServiceInfo>
 
-                    </ServiceArea>
+                                    <ServiceChooseButton>
+                                        <ServiceChooseBtnText>Agendar</ServiceChooseBtnText>
+                                    </ServiceChooseButton>
 
-                    <TestimonialArea>
-
-                    </TestimonialArea>
-
+                                </ServiceItem>
+                            ))}
+                        </ServiceArea>
+                    }
+                    {userInfo.testimonials && userInfo.testimonials.length > 0 &&
+                        <TestimonialArea>
+                            <Swiper
+                                style={{height:110}}
+                                showsPagination={false}
+                                showsButtons={true}
+                                prevButton={<NavPrevIcon width="35" height="35" fill="#000" />}
+                                nextButton={<NavNextIcon width="35" height="35" fill="#000" />}
+                            >
+                                {userInfo.testimonials.map((item, key)=>(
+                                    <TestimonialItem key={key}>
+                                        <TestimonialInfo>
+                                            <TestimonialName > {item.name} </TestimonialName>
+                                            <Stars stars={item.rate} showNumber={false} />
+                                        </TestimonialInfo>
+                                        <TestimonialBody> {item.body} </TestimonialBody>
+                                    </TestimonialItem>
+                                ))}
+                            </Swiper>
+                        </TestimonialArea>
+                    }
                 </PageBody>
             </Scroller>
             <BackButton onPress={handleBackButton} >
