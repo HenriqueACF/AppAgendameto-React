@@ -5,6 +5,7 @@ import Swiper from 'react-native-swiper';
 
 //components
 import Stars from '../../components/Stars';
+import BarberModal from '../../components/BarberModal';
 
 //icons
 import FavoriteFullIcon from '../../assets/favorite_full.svg';
@@ -66,6 +67,8 @@ export default () =>{
 
     const [ loading, setLoading ] = useState(false);
     const [favorited, setFavorited] = useState(false);
+    const [selectedService, setSelectedService] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     //useeffects
 
@@ -94,6 +97,11 @@ export default () =>{
     const handleFavClick = () =>{
         setFavorited(!favorited);
         Api.setFavorite(userInfo.id);
+    }
+
+    const handleServiceChoose = (key) =>{
+        setSelectedService(key);
+        setShowModal(true);
     }
 
     return (
@@ -147,7 +155,7 @@ export default () =>{
                                         <ServicePrice> R${item.price} </ServicePrice>
                                     </ServiceInfo>
 
-                                    <ServiceChooseButton>
+                                    <ServiceChooseButton onPress={()=>handleServiceChoose(key)}>
                                         <ServiceChooseBtnText>Agendar</ServiceChooseBtnText>
                                     </ServiceChooseButton>
 
@@ -181,6 +189,12 @@ export default () =>{
             <BackButton onPress={handleBackButton} >
                 <BackIcon width="44" height="44" fill="#FFF" />
             </BackButton>
+            <BarberModal
+                show={showModal}
+                setShow={setShowModal}
+                user={userInfo}
+                service={selectedService}
+            />
         </Container>    
     );
 }
