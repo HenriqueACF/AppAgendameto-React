@@ -278,24 +278,21 @@ export default ({show, setShow, user, service}) => {
             selectedDay > 0 &&
             selectedHour != null 
         ){
-            // let res = await Api.setAppointment(
-            // user.id,
-            //     service,
-            //     selectedYear,
-            //     selectedMonth,
-            //     selectedDay,
-            //     selectedHour
-            // );
+            let res = await Api.setAppointment(
+                user.id,
+                user.services[service].id,
+                selectedYear,
+                selectedMonth +1,
+                selectedDay,
+                selectedHour
+            );
 
-            // if(res.error == ''){
-            //     setShow(false);
-            // }else{
-            //     alert(res.error);
-            //     navigation.navigate('Appointments');
-            // }
-
-             setShow(false);
-             navigation.navigate('Appointments');
+            if(res.error == ''){
+                setShow(false);
+            }else{
+                alert(res.error);
+                navigation.navigate('Appointments');
+            }
 
         }else{
             alert("Marque todos os campos!")
