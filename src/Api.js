@@ -104,5 +104,11 @@ export default{
         });
         const json = await req.json();
         return json; 
-    }
+    },
+    search: async (barberName) =>{
+        const token = await AsyncStorage.getItem('token');
+        const req = await fetch(`${BASE_API}/search?q=${barberName}&token=${token}`);
+        const json = await req.json();
+        return json;
+    },
 }

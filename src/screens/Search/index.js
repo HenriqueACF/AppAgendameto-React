@@ -1,11 +1,32 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { Container } from './styles';
+import React, {useState} from 'react';
+import { 
+    Container,
+    SearchArea,
+    SearchInput,
+} from './styles';
 
 export default () =>{
+
+    const [searchText, setSearchText] = useState('');
+
+    const searchBarbers = () =>{
+
+    }
+
     return (
         <Container>
-            <Text>Search</Text>
+            <SearchArea>
+                <SearchInput 
+                    placeholder="Digite aqui..."
+                    placeholderTextColor="#FFF"
+                    value={searchText}
+                    onChangeText={t =>setSearchText(t)}
+                    onEndEditing={searchBarbers}
+                    returnKey="search"
+                    autoFocus
+                    selectTextOnFocus
+                />
+            </SearchArea>
         </Container>    
     );
 }
