@@ -49,6 +49,22 @@ const DateText = styled.Text `
 `;
 
 export default ({data}) => {
+
+    let d = data.datetime.split('');
+    //Time
+    let time = d[1].substring(0,5);
+
+    //Date - Formato BR
+    let date = new Date(d[0]);
+    let year = date.getFullYear();
+    let month = date.getMonth + 1;
+    let day = date.getDate();
+
+    month = month < 10 ? '0'+month : month;
+    day = day < 10 ? '0'+day : day;
+
+    let dateString = `${day}/${month}/${year}`;
+
     return (
         <Area>
             <UserArea>
@@ -62,8 +78,8 @@ export default ({data}) => {
             </SplitArea>
 
             <SplitArea>
-                <DateText> 99/99/9999 </DateText>
-                <DateText>99:99</DateText>
+                <DateText> { dateString }</DateText>
+                <DateText>{time }</DateText>
             </SplitArea>
         </Area>
     )
